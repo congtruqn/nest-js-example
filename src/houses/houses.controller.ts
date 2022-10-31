@@ -3,6 +3,7 @@ import { HousesService } from './houses.service';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { UpdateHouseDto } from './dto/update-house.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { isUUID } from 'class-validator';
 
 @ApiTags('Houses')
 @Controller('houses')
@@ -16,12 +17,14 @@ export class HousesController {
 
   @Get('farm/:farm_id')
   findAll(@Param('farm_id') farm_id: string) {
+    if(farm_id && !isUUID(farm_id)) throw new Error(`Invalid id, UUID format expected but received ${farm_id}`);
     return this.housesService.findAll(farm_id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.housesService.findOne(+id);
+    if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
+    return this.housesService.findOne(id);
   }
 
   @Patch(':id')

@@ -18,7 +18,7 @@ const dbConfig = {
   port: configService.get<number>('DATABASE_PORT'),
   username: configService.get('DATABASE_USER', 'postgres'),
   password: configService.get('DATABASE_PASS', ''),
-  database: configService.get<string>('DATABASE_NAME', 'identity-service'),
+  database: configService.get<string>('DATABASE_NAME', 'defaultdb'),
   entities: [FarmsModel,HousesModel],
   "ssl": true,
   "extra": {

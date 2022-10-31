@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HousesModel } from '../model/houses.entity';
 import { Repository } from 'typeorm';
@@ -21,12 +21,27 @@ export class HousesService {
     await this._housesRepository.save(newUser);
   }
 
-  findAll(farm_id:string) {
-    return `This action returns all houses`;
+  async findAll(farm_id:string) {
+    const farm = await this._housesRepository.findOne({
+      where: {
+        farm: {
+          id : farm_id
+        },
+    },
+    });
+    if(farm){
+      return farm;
+    }
+    throw new HttpException('Farm not found', HttpStatus.NOT_FOUND);
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} house`;
+  async findOne(id: string) {
+    const house = await this._housesRepository.findOne({
+      where: { id: id },
+    });
+    if(house){
+      return house;
+    }
+    throw new HttpException('House not found', HttpStatus.NOT_FOUND);
   }
 
   update(id: number, updateHouseDto: UpdateHouseDto) {

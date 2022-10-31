@@ -4,22 +4,31 @@ import { UpdateFarmDto } from './dto/update-farm.dto';
 import { FarmsModel } from '../model/farms.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import { PaginationService } from '../utils/pagination/services/pagination.service';
 @Injectable()
 export class FarmsService {
   constructor(
     @InjectRepository(FarmsModel)
     private _farmsRepository: Repository<FarmsModel>,
+    private readonly _paginationService: PaginationService,
   ) {}
   create(createFarmDto: CreateFarmDto) {
     return this._farmsRepository.save(createFarmDto)
   }
 
-  findAll() {
-    return `This action returns all farms`;
+  findAll(options:any) {
+    return this._paginationService.paginate<FarmsModel>(
+      this._farmsRepository,
+      options,
+      {
+        order: {
+          created_at: 'DESC', // "DESC"
+        },
+      },
+    );
   }
 
-  findOne(id) {
+  findOne(id:string) {
     const farm = this._farmsRepository.findOne({
       where: { id: id },
     });
@@ -41,8 +50,11 @@ export class FarmsService {
     throw new HttpException('Todo not found', HttpStatus.NOT_FOUND);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} farm`;
+  async remove(id: string) {
+    const deletedTodo = await this._farmsRepository.delete(id);
+    if (!deletedTodo.affected) {
+      throw new HttpException('Farm not found', HttpStatus.NOT_FOUND);
+    }
   }
 }
 function IsUUID() {
