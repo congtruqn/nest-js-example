@@ -57,7 +57,5 @@ export class FarmsService {
     }
   }
 }
-function IsUUID() {
-  throw new Error('Function not implemented.');
-}
+
 

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { HousesService } from './houses.service';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { UpdateHouseDto } from './dto/update-house.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { isUUID } from 'class-validator';
+import { PaginationDto } from '../utils/pagination/interfaces/pagination.dto';
 
 @ApiTags('Houses')
 @Controller('houses')
@@ -16,9 +17,9 @@ export class HousesController {
   }
 
   @Get('farm/:farm_id')
-  findAll(@Param('farm_id') farm_id: string) {
+  findAll(@Param('farm_id') farm_id: string,@Query() filterPaginationDto: PaginationDto) {
     if(farm_id && !isUUID(farm_id)) throw new Error(`Invalid id, UUID format expected but received ${farm_id}`);
-    return this.housesService.findAll(farm_id);
+    return this.housesService.findAll(farm_id,filterPaginationDto);
   }
 
   @Get(':id')
@@ -29,11 +30,12 @@ export class HousesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateHouseDto: UpdateHouseDto) {
-    return this.housesService.update(+id, updateHouseDto);
+    return this.housesService.update(id, updateHouseDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.housesService.remove(+id);
+    if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
+    return this.housesService.remove(id);
   }
 }
