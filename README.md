@@ -14,3 +14,7 @@ nest -- generate module farms
   ...
 }
 ```
+
+npm run makemigrations --name=test
+
+npm run migrations

@@ -12,6 +12,7 @@ async function bootstrap() {
   .setVersion('1.0')
   .addTag('Farms', '')
   .addTag('Houses', '')
+  .addTag('Cages', '')
   .addBearerAuth(
     { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
     'access-token',
