@@ -5,9 +5,10 @@ import { FarmsModule } from './farms/farms.module';
 import { CagesModule } from './cages/cages.module';
 import { HousesModule } from './houses/houses.module';
 import { DatabaseModule } from './configs/database/database.module';
+import { PensModule } from './pens/pens.module';
 @Module({
   imports: [
-    FarmsModule, CagesModule, HousesModule,DatabaseModule],
+    FarmsModule, CagesModule, HousesModule,DatabaseModule, PensModule],
   controllers: [AppController],
   providers: [AppService],
 })

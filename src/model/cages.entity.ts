@@ -4,10 +4,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { HousesModel } from './houses.entity';
+import { PensModel } from './pens.entity';
 
 @Entity({ name: 'cages' })
 export class CagesModel extends BaseEntity {
@@ -21,6 +23,12 @@ export class CagesModel extends BaseEntity {
   @ManyToOne(() => HousesModel, (house) => house.id)
   @JoinColumn({ name: 'house_id' })
   house: HousesModel
+
+  @OneToMany(
+    () => PensModel,
+    (pens) => pens.id,
+  )
+  CageOfPen: PensModel[];
 
 }
 

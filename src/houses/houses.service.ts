@@ -28,15 +28,18 @@ export class HousesService {
       this._housesRepository,
       options,
       {
+        relations: {
+          farm: true,
+        },
         order: {
-          created_at: 'DESC', // "DESC"
+          created_at: 'DESC',
         },
         where: {
           farm: {
             id : farm_id
           },
         }
-      },
+      }
     );
   }
   async findOne(id: string) {

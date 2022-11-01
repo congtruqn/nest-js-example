@@ -1,0 +1,95 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx-ns
+  labels:
+    name: nginx-ns
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nginx-ns
+  name: aks-helloworld-two  
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aks-helloworld-two
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld-two
+    spec:
+      containers:
+      - name: testapp
+        image: congtruqn/testapp:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 150m
+          limits:
+            memory: 512Mi
+            cpu: 250m        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nginx-ns
+  name: aks-helloworld-two  
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: aks-helloworld-two
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: nginx-ns
+  name: hello-world-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: aks-helloworld-two 
+            port:
+              number: 3000
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: nginx-ns
+  name: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-application
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu #scaling based on CPU
+        targetAverageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 60
