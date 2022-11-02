@@ -23,24 +23,25 @@ export class PensService {
     await this._pensRepository.save(newUser);
   }
 
-  findAll(cage_id:string,options:any,filter:any) {
-    let temp = {}
+  findAll(options:any,penfilterDto:any) {
+    const queryBuilder = this._pensRepository.createQueryBuilder('pens')
+    .leftJoinAndSelect('pens.cage', 'cages')
+    .leftJoinAndSelect('cages.house', 'houses')
+    .orderBy('pens.created_at', 'DESC');
+    if(penfilterDto.cage_id){
+      let cage_id = penfilterDto.cage_id;
+      queryBuilder.andWhere('cages.id IN (:cage_id)', {
+        cage_id
+      })
+    }
+    if(penfilterDto.house_id){
+      queryBuilder.andWhere('houses.id IN (:house_id)', {
+        house_id:penfilterDto.house_id
+      })
+    }
     return this._paginationService.paginate<PensModel>(
-      this._pensRepository,
+      queryBuilder,
       options,
-      {
-        relations: {
-          cage: {
-            house:true
-          },
-        },
-        order: {
-          created_at: 'DESC', // "DESC"
-        },
-        where: {
-         ...temp
-        }
-      },
     );
   }
 

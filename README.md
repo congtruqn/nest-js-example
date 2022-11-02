@@ -18,3 +18,8 @@ nest -- generate module farms
 npm run makemigrations --name=test
 
 npm run migrations
+
+kubectl apply -f https://github.com/bob-walters/nginx-istio/blob/main/namespace-ingress.yaml
+kubectl apply -f https://github.com/bob-walters/nginx-istio/blob/main/ingress-class.yaml
+
+helm upgrade --install ingress-nginx-v4 ingress-nginx -f .\k8s\nginx-ingress-release-values.yaml --repo https://kubernetes.github.io/ingress-nginx  --namespace ingress --version="3.30.0"

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { PensService } from './pens.service';
 import { CreatePenDto } from './dto/create-pen.dto';
 import { UpdatePenDto } from './dto/update-pen.dto';
+import { PenfilterDto } from './dto/filter.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../utils/pagination/interfaces/pagination.dto';
 import { isUUID } from 'class-validator';
@@ -17,9 +18,11 @@ export class PensController {
   }
 
   @Get()
-  findAll(@Param('cage_id') cage_id: string,@Query() filterPaginationDto: PaginationDto,@Query() fillter:any ) {
-    if(cage_id && !isUUID(cage_id)) throw new Error(`Invalid id, UUID format expected but received ${cage_id}`);
-    return this.pensService.findAll(cage_id,filterPaginationDto,fillter);
+  async findAll(@Query() filterPaginationDto: PaginationDto,@Query() penfilterDto:PenfilterDto) {
+    console.time('test');
+    let pen = await this.pensService.findAll(filterPaginationDto,penfilterDto);
+    console.timeEnd('test');
+    return pen;
   }
 
   @Get(':id')

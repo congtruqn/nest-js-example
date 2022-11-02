@@ -58,6 +58,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/auth-url: "https://staging-cvid-api-ggczm4ik6q-an.a.run.app/employee"
+    nginx.ingress.kubernetes.io/auth-response-headers: "authorization"
 spec:
   ingressClassName: nginx
   rules:

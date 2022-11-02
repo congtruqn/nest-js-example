@@ -50,6 +50,12 @@ export class FarmsModel extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   contact_phone: string;
 
+  @Column({ type: 'int' })
+  longitude: number;
+ 
+  @Column({ type: 'int' })
+  latitude: number;
+
   @OneToMany(() => HousesModel, (house) => house.farm)
   house: HousesModel[]
 

@@ -44,4 +44,13 @@ export class CreateFarmDto {
     @ApiProperty()
     @IsNotEmpty()
     business_unit:number
+
+    @ApiProperty()
+    @IsNotEmpty()
+    longitude:number
+    
+    @ApiProperty()
+    @IsNotEmpty()
+    latitude:number    
+    
 }
