@@ -34,6 +34,3 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .env.development
-k8s/ingress-class.yaml
-k8s/namespace-ingress.yaml
-k8s/nginx-ingress-release-values.yaml
