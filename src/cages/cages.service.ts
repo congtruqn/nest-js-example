@@ -22,20 +22,24 @@ export class CagesService {
     await this._cagesRepository.save(newUser);
   }
 
-  findAll(house_id:string,options:any) {
+  findAll(options:any,cagefilterDto:any) {
+    const queryBuilder = this._cagesRepository.createQueryBuilder('cages')
+    .leftJoinAndSelect('cages.house', 'houses')
+    .leftJoinAndSelect('houses.farm', 'farms')
+    .orderBy('cages.created_at', 'DESC');
+    if(cagefilterDto.house_id){
+      queryBuilder.andWhere('houses.id IN (:house_id)', {
+        house_id:cagefilterDto.house_id
+      })
+    }
+    if(cagefilterDto.farm_id){
+      queryBuilder.andWhere('farms.id IN (:farm_id)', {
+        farm_id:cagefilterDto.farm_id
+      })
+    }
     return this._paginationService.paginate<CagesModel>(
-      this._cagesRepository,
+      queryBuilder,
       options,
-      {
-        order: {
-          created_at: 'DESC', // "DESC"
-        },
-        where: {
-          house: {
-            id : house_id
-          },
-        }
-      },
     );
   }
 

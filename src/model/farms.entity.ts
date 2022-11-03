@@ -50,10 +50,10 @@ export class FarmsModel extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   contact_phone: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int' ,nullable: true, default: null,})
   longitude: number;
  
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true, default: null, })
   latitude: number;
 
   @OneToMany(() => HousesModel, (house) => house.farm)
