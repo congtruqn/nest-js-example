@@ -6,7 +6,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { HousesModel } from './houses.entity';
+import { ParnsModel } from './parns.entity';
 export enum farmType {
   OPEN = 1,
   CLOSE = 0,
@@ -56,8 +56,8 @@ export class FarmsModel extends BaseEntity {
   @Column({ type: 'int', nullable: true, default: null, })
   latitude: number;
 
-  @OneToMany(() => HousesModel, (house) => house.farm)
-  house: HousesModel[]
+  @OneToMany(() => ParnsModel, (parn) => parn.id)
+  parn: ParnsModel[]
 
 }
 

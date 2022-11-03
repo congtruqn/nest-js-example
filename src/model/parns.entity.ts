@@ -10,8 +10,8 @@ import {
   import { FarmsModel } from './farms.entity';
   import { CagesModel } from './cages.entity';
 
-  @Entity({ name: 'houses' })
-  export class HousesModel extends BaseEntity {
+  @Entity({ name: 'parns' })
+  export class ParnsModel extends BaseEntity {
   
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -27,7 +27,7 @@ import {
       () => CagesModel,
       (cages) => cages.id,
     )
-    HouseToCages: CagesModel[];
+    ParnToCages: CagesModel[];
   }
   
   

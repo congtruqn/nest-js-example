@@ -5,7 +5,7 @@ export class CagefilterDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  house_id: string;
+  parn_id: string;
 
   @ApiPropertyOptional()
   @IsOptional()

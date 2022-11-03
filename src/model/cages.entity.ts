@@ -8,7 +8,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { HousesModel } from './houses.entity';
+import { ParnsModel } from './parns.entity';
 import { PensModel } from './pens.entity';
 
 @Entity({ name: 'cages' })
@@ -20,9 +20,9 @@ export class CagesModel extends BaseEntity {
   @Column({ type: 'varchar', length: 100 })
   name: string;
 
-  @ManyToOne(() => HousesModel, (house) => house.id)
-  @JoinColumn({ name: 'house_id' })
-  house: HousesModel
+  @ManyToOne(() => ParnsModel, (parn) => parn.id)
+  @JoinColumn({ name: 'parn_id' })
+  parn: ParnsModel
 
   @OneToMany(
     () => PensModel,

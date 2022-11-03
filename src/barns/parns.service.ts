@@ -1,18 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HousesModel } from '../model/houses.entity';
+import { ParnsModel } from '../model/parns.entity';
 import { Repository } from 'typeorm';
-import { CreateHouseDto } from './dto/create-house.dto';
-import { UpdateHouseDto } from './dto/update-house.dto';
+import { CreateParnDto } from './dto/create-parn.dto';
+import { UpdateParnDto } from './dto/update-parn.dto';
 import { PaginationService } from '../utils/pagination/services/pagination.service';
 @Injectable()
-export class HousesService {
+export class ParnsService {
   constructor(
-    @InjectRepository(HousesModel)
-    private _housesRepository: Repository<HousesModel>,
+    @InjectRepository(ParnsModel)
+    private _housesRepository: Repository<ParnsModel>,
     private readonly _paginationService: PaginationService,
   ) {}
-  async create(createHouseDto: CreateHouseDto) {
+  async create(createHouseDto: CreateParnDto) {
     const newUser = this._housesRepository.create({
       name: createHouseDto.name,
       farm: {
@@ -23,15 +23,15 @@ export class HousesService {
   }
 
   async findAll(options:any,housefilterDto:any) {
-    const queryBuilder = this._housesRepository.createQueryBuilder('houses')
-    .leftJoinAndSelect('houses.farm', 'farms')
-    .orderBy('houses.created_at', 'DESC');
+    const queryBuilder = this._housesRepository.createQueryBuilder('parns')
+    .leftJoinAndSelect('parns.farm', 'farms')
+    .orderBy('parns.created_at', 'DESC');
     if(housefilterDto.farm_id){
       queryBuilder.andWhere('farms.id IN (:farm_id)', {
         farm_id:housefilterDto.farm_id
       })
     }
-    return this._paginationService.paginate<HousesModel>(
+    return this._paginationService.paginate<ParnsModel>(
       queryBuilder,
       options,
     );
@@ -46,7 +46,7 @@ export class HousesService {
     throw new HttpException('House not found', HttpStatus.NOT_FOUND);
   }
 
-  async update(id: string, updateHouseDto: UpdateHouseDto) {
+  async update(id: string, updateHouseDto: UpdateParnDto) {
     await this._housesRepository.update(id, {
       name: updateHouseDto.name,
       farm: {

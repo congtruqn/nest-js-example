@@ -9,5 +9,5 @@ export class CreateCageDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsUUID()
-    house_id: string;
+    parn_id: string;
 }

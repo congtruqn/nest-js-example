@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {FarmsModel} from "../model/farms.entity"
-import {HousesModel} from "../model/houses.entity"
+import {ParnsModel} from "../model/parns.entity"
 import {CagesModel} from "../model/cages.entity"
 import {PensModel} from "../model/pens.entity"
 import {
@@ -21,7 +21,7 @@ const dbConfig = {
   username: configService.get('DATABASE_USER', 'postgres'),
   password: configService.get('DATABASE_PASS', ''),
   database: configService.get<string>('DATABASE_NAME', 'defaultdb'),
-  entities: [FarmsModel,HousesModel,CagesModel,PensModel],
+  entities: [FarmsModel,ParnsModel,CagesModel,PensModel],
   "ssl": true,
   "extra": {
     "ssl": {

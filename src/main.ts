@@ -11,7 +11,7 @@ async function bootstrap() {
   .setDescription('The API description')
   .setVersion('1.0')
   .addTag('Farms', '')
-  .addTag('Houses', '')
+  .addTag('Parns', '')
   .addTag('Cages', '')
   .addTag('Pens', '')
   .addBearerAuth(

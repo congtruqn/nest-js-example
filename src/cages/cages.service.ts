@@ -15,8 +15,8 @@ export class CagesService {
   async create(CreateCageDto: CreateCageDto) {
     const newUser = this._cagesRepository.create({
       name: CreateCageDto.name,
-      house: {
-        id: CreateCageDto.house_id,
+      parn: {
+        id: CreateCageDto.parn_id,
       },
     });
     return await this._cagesRepository.save(newUser);
@@ -24,12 +24,12 @@ export class CagesService {
 
   findAll(options:any,cagefilterDto:any) {
     const queryBuilder = this._cagesRepository.createQueryBuilder('cages')
-    .leftJoinAndSelect('cages.house', 'houses')
-    .leftJoinAndSelect('houses.farm', 'farms')
+    .leftJoinAndSelect('cages.parn', 'parns')
+    .leftJoinAndSelect('parns.farm', 'farms')
     .orderBy('cages.created_at', 'DESC');
-    if(cagefilterDto.house_id){
-      queryBuilder.andWhere('houses.id IN (:house_id)', {
-        house_id:cagefilterDto.house_id
+    if(cagefilterDto.parn_id){
+      queryBuilder.andWhere('parns.id IN (:parn_id)', {
+        parn_id:cagefilterDto.parn_id
       })
     }
     if(cagefilterDto.farm_id){
@@ -56,8 +56,8 @@ export class CagesService {
   async update(id: string, updateCageDto: UpdateCageDto) {
     await this._cagesRepository.update(id, {
       name: updateCageDto.name,
-      house: {
-        id: updateCageDto.house_id,
+      parn: {
+        id: updateCageDto.parn_id,
       },
     });
     const updatedHouse = await this._cagesRepository.findOne({

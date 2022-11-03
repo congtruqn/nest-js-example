@@ -1,8 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsUUID } from 'class-validator';
-import { CreateHouseDto } from './create-house.dto';
 
-export class UpdateHouseDto {
+export class UpdateParnDto {
     @ApiProperty()
     @IsNotEmpty()
     name: string;

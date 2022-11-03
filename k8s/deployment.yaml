@@ -62,7 +62,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-response-headers: "data"
 spec:
   ingressClassName: nginx
-  rules:
+   :
   - http:
       paths:
       - path: /(.*)

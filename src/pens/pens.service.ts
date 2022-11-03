@@ -26,7 +26,7 @@ export class PensService {
   findAll(options:any,penfilterDto:any) {
     const queryBuilder = this._pensRepository.createQueryBuilder('pens')
     .leftJoinAndSelect('pens.cage', 'cages')
-    .leftJoinAndSelect('cages.house', 'houses')
+    .leftJoinAndSelect('cages.parn', 'parns')
     .orderBy('pens.created_at', 'DESC');
     if(penfilterDto.cage_id){
       let cage_id = penfilterDto.cage_id;
@@ -35,8 +35,8 @@ export class PensService {
       })
     }
     if(penfilterDto.house_id){
-      queryBuilder.andWhere('houses.id IN (:house_id)', {
-        house_id:penfilterDto.house_id
+      queryBuilder.andWhere('parns.id IN (:parn_id)', {
+        parn_id:penfilterDto.parn_id
       })
     }
     return this._paginationService.paginate<PensModel>(

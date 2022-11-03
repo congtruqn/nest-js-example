@@ -11,5 +11,5 @@ export class UpdateCageDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsUUID()
-    house_id: string;
+    parn_id: string;
 }
