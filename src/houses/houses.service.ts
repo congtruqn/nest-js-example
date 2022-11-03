@@ -19,7 +19,7 @@ export class HousesService {
         id: createHouseDto.farm_id,
       },
     });
-    await this._housesRepository.save(newUser);
+    return await this._housesRepository.save(newUser);
   }
 
   async findAll(options:any,housefilterDto:any) {

@@ -19,7 +19,7 @@ export class CagesService {
         id: CreateCageDto.house_id,
       },
     });
-    await this._cagesRepository.save(newUser);
+    return await this._cagesRepository.save(newUser);
   }
 
   findAll(options:any,cagefilterDto:any) {
@@ -50,7 +50,7 @@ export class CagesService {
     if(house){
       return house;
     }
-    throw new HttpException('House not found', HttpStatus.NOT_FOUND);
+    throw new HttpException('House not found', HttpStatus.NO_CONTENT);
   }
 
   async update(id: string, updateCageDto: UpdateCageDto) {
@@ -67,10 +67,13 @@ export class CagesService {
     if (updatedHouse) {
       return updatedHouse;
     }
-    throw new HttpException('House not found', HttpStatus.NOT_FOUND);
+    throw new HttpException('House not found', HttpStatus.NO_CONTENT);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cage`;
+  async remove(id: string) {
+    const deletedCage = await this._cagesRepository.delete(id);
+    if (!deletedCage.affected) {
+      throw new HttpException('House not found', HttpStatus.NO_CONTENT);
+    }
   }
 }

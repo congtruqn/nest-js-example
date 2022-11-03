@@ -5,7 +5,7 @@ import { UpdateFarmDto } from './dto/update-farm.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { isUUID } from 'class-validator';
 import { PaginationDto } from '../utils/pagination/interfaces/pagination.dto';
-
+import { ResponseEntity } from '../utils/responses';
 
 @ApiTags('Farms')
 @Controller('farms')
@@ -13,28 +13,53 @@ export class FarmsController {
   constructor(private readonly farmsService: FarmsService) {}
 
   @Post()
-  create(@Body() createFarmDto: CreateFarmDto) {
-    return this.farmsService.create(createFarmDto);
+  async create(@Body() createFarmDto: CreateFarmDto) {
+    let farm =  await this.farmsService.create(createFarmDto);
+    return new ResponseEntity({
+      statusCode: 201,
+      message: "",
+      data: {farm},
+    });
   }
 
   @Get()
-  findAll(@Query() filterPaginationDto: PaginationDto) {
-    return this.farmsService.findAll(filterPaginationDto);
+  async findAll(@Query() filterPaginationDto: PaginationDto) {
+    let listFarms = await this.farmsService.findAll(filterPaginationDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {...listFarms},
+    });
   }
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.farmsService.findOne(id);
+    let farm =  await this.farmsService.findOne(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {farm},
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFarmDto: UpdateFarmDto) {
-    return this.farmsService.update(id, updateFarmDto);
+  async update(@Param('id') id: string, @Body() updateFarmDto: UpdateFarmDto) {
+    let farm =  await this.farmsService.update(id, updateFarmDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {farm},
+    })
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.farmsService.remove(id);
+    await this.farmsService.remove(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {},
+    })
   }
 }

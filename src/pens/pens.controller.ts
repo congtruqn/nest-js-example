@@ -6,40 +6,64 @@ import { PenfilterDto } from './dto/filter.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../utils/pagination/interfaces/pagination.dto';
 import { isUUID } from 'class-validator';
-
+import { ResponseEntity } from '../utils/responses';
 @ApiTags('Pens')
 @Controller('pens')
 export class PensController {
   constructor(private readonly pensService: PensService) {}
 
   @Post()
-  create(@Body() createPenDto: CreatePenDto) {
-    return this.pensService.create(createPenDto);
+  async create(@Body() createPenDto: CreatePenDto) {
+    let pen = await this.pensService.create(createPenDto);
+    return new ResponseEntity({
+      statusCode: 201,
+      message: "",
+      data: {pen},
+    });
   }
 
   @Get()
   async findAll(@Query() filterPaginationDto: PaginationDto,@Query() penfilterDto:PenfilterDto) {
     console.time('test');
-    let pen = await this.pensService.findAll(filterPaginationDto,penfilterDto);
+    let listPens = await this.pensService.findAll(filterPaginationDto,penfilterDto);
     console.timeEnd('test');
-    return pen;
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {...listPens},
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.pensService.findOne(id);
+    let pen = await this.pensService.findOne(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {pen},
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePenDto: UpdatePenDto) {
+  async asyncupdate(@Param('id') id: string, @Body() updatePenDto: UpdatePenDto) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.pensService.update(id, updatePenDto);
+    let pen = await this.pensService.update(id, updatePenDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {pen},
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.pensService.remove(id);
+    await this.pensService.remove(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {},
+    });
   }
 }

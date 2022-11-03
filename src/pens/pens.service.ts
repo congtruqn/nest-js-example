@@ -20,7 +20,7 @@ export class PensService {
         id: CreatePenDto.cage_id,
       },
     });
-    await this._pensRepository.save(newUser);
+    return await this._pensRepository.save(newUser);
   }
 
   findAll(options:any,penfilterDto:any) {

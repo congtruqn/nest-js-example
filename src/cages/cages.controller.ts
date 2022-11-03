@@ -18,7 +18,7 @@ export class CagesController {
   async create(@Body() createCageDto: CreateCageDto):Promise<ResponseEntity> {
     let cage = await this.cagesService.create(createCageDto);
     return new ResponseEntity({
-      statusCode: 200,
+      statusCode: 201,
       message: "",
       data: {cage},
     });
@@ -36,20 +36,35 @@ export class CagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.cagesService.findOne(id);
+    let cage = await this.cagesService.findOne(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {cage},
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCageDto: UpdateCageDto) {
+  async update(@Param('id') id: string, @Body() updateCageDto: UpdateCageDto) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.cagesService.update(id, updateCageDto);
+    let cage = await this.cagesService.update(id, updateCageDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {cage},
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.cagesService.remove(+id);
+    await this.cagesService.remove(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {},
+    });
   }
 }
