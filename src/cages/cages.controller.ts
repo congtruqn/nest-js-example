@@ -19,7 +19,7 @@ export class CagesController {
     let cage = await this.cagesService.create(createCageDto);
     return new ResponseEntity({
       statusCode: 200,
-      message: [],
+      message: "",
       data: {cage},
     });
   }
@@ -30,7 +30,7 @@ export class CagesController {
     let listCages =  await  this.cagesService.findAll(filterPaginationDto,cgefilterDto);
     return new ResponseEntity({
       statusCode: 200,
-      message: [],
+      message: "",
       data: {...listCages},
     });
   }

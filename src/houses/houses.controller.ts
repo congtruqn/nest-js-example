@@ -2,9 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { HousesService } from './houses.service';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { UpdateHouseDto } from './dto/update-house.dto';
+import { HousefilterDto } from './dto/filter.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { isUUID } from 'class-validator';
 import { PaginationDto } from '../utils/pagination/interfaces/pagination.dto';
+import { ResponseEntity } from '../utils/responses';
 
 @ApiTags('Houses')
 @Controller('houses')
@@ -12,30 +14,54 @@ export class HousesController {
   constructor(private readonly housesService: HousesService) {}
 
   @Post()
-  create(@Body() createHouseDto: CreateHouseDto) {
-    return this.housesService.create(createHouseDto);
+  async create(@Body() createHouseDto: CreateHouseDto) {
+    let house = await this.housesService.create(createHouseDto);
+    return new ResponseEntity({
+      statusCode: 201,
+      message: "",
+      data: {house},
+    });
   }
 
-  @Get('farm/:farm_id')
-  findAll(@Param('farm_id') farm_id: string,@Query() filterPaginationDto: PaginationDto) {
-    if(farm_id && !isUUID(farm_id)) throw new Error(`Invalid id, UUID format expected but received ${farm_id}`);
-    return this.housesService.findAll(farm_id,filterPaginationDto);
+  @Get()
+  async findAll(@Query() filterPaginationDto: PaginationDto,@Query() housefilterDto: HousefilterDto) {
+    let listHouses = await this.housesService.findAll(filterPaginationDto,housefilterDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {...listHouses},
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.housesService.findOne(id);
+    let  house = await this.housesService.findOne(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {house},
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHouseDto: UpdateHouseDto) {
-    return this.housesService.update(id, updateHouseDto);
+  async update(@Param('id') id: string, @Body() updateHouseDto: UpdateHouseDto) {
+    let house = await this.housesService.update(id, updateHouseDto);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {house},
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if(id && !isUUID(id)) throw new Error(`Invalid id, UUID format expected but received ${id}`);
-    return this.housesService.remove(id);
+    await this.housesService.remove(id);
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {},
+    });
   }
 }

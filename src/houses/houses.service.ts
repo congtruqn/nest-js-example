@@ -22,24 +22,18 @@ export class HousesService {
     await this._housesRepository.save(newUser);
   }
 
-  async findAll(farm_id:string,options:any) {
-
+  async findAll(options:any,housefilterDto:any) {
+    const queryBuilder = this._housesRepository.createQueryBuilder('houses')
+    .leftJoinAndSelect('houses.farm', 'farms')
+    .orderBy('houses.created_at', 'DESC');
+    if(housefilterDto.farm_id){
+      queryBuilder.andWhere('farms.id IN (:farm_id)', {
+        farm_id:housefilterDto.farm_id
+      })
+    }
     return this._paginationService.paginate<HousesModel>(
-      this._housesRepository,
+      queryBuilder,
       options,
-      {
-        relations: {
-          farm: true,
-        },
-        order: {
-          created_at: 'DESC',
-        },
-        where: {
-          farm: {
-            id : farm_id
-          },
-        }
-      }
     );
   }
   async findOne(id: string) {
@@ -66,13 +60,13 @@ export class HousesService {
     if (updatedHouse) {
       return updatedHouse;
     }
-    throw new HttpException('House not found', HttpStatus.NOT_FOUND);
+    throw new HttpException('House not found', HttpStatus.NO_CONTENT);
   }
 
   async remove(id: string) {
     const deletedTodo = await this._housesRepository.delete(id);
     if (!deletedTodo.affected) {
-      throw new HttpException('House not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('House not found', HttpStatus.NO_CONTENT);
     }
   }
 }
