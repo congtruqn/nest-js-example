@@ -5,7 +5,7 @@ import { FarmsModel } from '../model/farms.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationService } from '../utils/pagination/services/pagination.service';
-@Injectable()
+
 export class FarmsService {
   constructor(
     @InjectRepository(FarmsModel)

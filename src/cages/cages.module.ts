@@ -7,6 +7,7 @@ import { CagesModel } from '../model/cages.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([CagesModel]),PaginationModule],
   controllers: [CagesController],
-  providers: [CagesService]
+  providers: [CagesService],
+  exports: [CagesService]
 })
 export class CagesModule {}
