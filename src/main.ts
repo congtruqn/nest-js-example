@@ -14,6 +14,7 @@ async function bootstrap() {
   .addTag('Parns', '')
   .addTag('Cages', '')
   .addTag('Pens', '')
+  .addTag('Uploads', '')
   .addBearerAuth(
     { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
     'access-token',

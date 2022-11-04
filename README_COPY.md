@@ -1,4 +1,4 @@
-nest -- generate controller uploadfiles
+nest -- generate controller farms
 nest -- generate service farms
 nest -- generate module farms
 
