@@ -7,9 +7,10 @@ import { ParnsModule } from './barns/parns.module';
 import { DatabaseModule } from './configs/database/database.module';
 import { PensModule } from './pens/pens.module';
 import { UploadModule } from './uploadfiles/uploadfile.module';
+import { AnimalsModule } from './animals/animals.module';
 @Module({
   imports: [
-    FarmsModule, CagesModule, ParnsModule,DatabaseModule, PensModule,UploadModule],
+    FarmsModule, CagesModule, ParnsModule,DatabaseModule, PensModule,UploadModule, AnimalsModule],
   controllers: [AppController],
   providers: [AppService],
 })
