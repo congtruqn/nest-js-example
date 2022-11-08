@@ -9,9 +9,10 @@ import {
   } from 'typeorm';
   import { BaseEntity } from './base.entity';
   import { AnimalsModel } from './animal.entity';
+  import { AnimalTypesModel } from './animal.type.entity';
 
-  @Entity({ name: 'aninal_types' })
-  export class AnimalTypesModel extends BaseEntity {
+  @Entity({ name: 'animal_events' })
+  export class AnimalEventsModel extends BaseEntity {
   
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -19,11 +20,11 @@ import {
     @Column({ type: 'varchar', length: 100 })
     name: string;
 
-    @OneToMany(
-      () => AnimalsModel,
-      (cages) => cages.id,
-    )
-    ParnToCages: AnimalsModel[];
+    @ManyToOne(() => AnimalTypesModel, (type) => type.id)
+    AnimalTypes: AnimalTypesModel[];
+
+    @ManyToOne(() => AnimalsModel, (animals) => animals.id)
+    EventsOfAnimal: AnimalsModel[];
   }
   
   

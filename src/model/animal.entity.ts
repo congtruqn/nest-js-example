@@ -10,9 +10,9 @@ import {
   } from 'typeorm';
   import { BaseEntity } from './base.entity';
   import { AnimalTypesModel } from './animal.type.entity';
-  import { CagesModel } from './cages.entity';
+  import { AnimalEventsModel } from './animal.events.entity';
 
-  @Entity({ name: 'aninals' })
+  @Entity({ name: 'animals' })
   export class AnimalsModel extends BaseEntity {
   
     @PrimaryGeneratedColumn('uuid')
@@ -70,8 +70,15 @@ import {
     status: number;
     
     @ManyToOne(() => AnimalTypesModel, (type) => type.id)
-    @JoinColumn({ name: 'type_id' })
-    farm: AnimalTypesModel
+    @JoinColumn({ name: 'animal_type' })
+    type: AnimalTypesModel
+
+    @OneToMany(
+        () => AnimalEventsModel,
+        (event) => event.id,
+    )
+    events: AnimalEventsModel[];
+
   }
   
   

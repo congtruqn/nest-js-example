@@ -5,6 +5,10 @@ import {FarmsModel} from "../model/farms.entity"
 import {ParnsModel} from "../model/parns.entity"
 import {CagesModel} from "../model/cages.entity"
 import {PensModel} from "../model/pens.entity"
+import {AnimalsModel} from "../model/animal.entity"
+import {AnimalTypesModel} from "../model/animal.type.entity"
+import {AnimalEventsModel} from "../model/animal.events.entity"
+
 import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
@@ -21,7 +25,15 @@ const dbConfig = {
   username: configService.get('DATABASE_USER', 'postgres'),
   password: configService.get('DATABASE_PASS', ''),
   database: configService.get<string>('DATABASE_NAME', 'defaultdb'),
-  entities: [FarmsModel,ParnsModel,CagesModel,PensModel],
+  entities: [
+    FarmsModel,
+    ParnsModel,
+    CagesModel,
+    PensModel,
+    AnimalsModel,
+    AnimalTypesModel,
+    AnimalEventsModel
+  ],
   "ssl": true,
   "extra": {
     "ssl": {

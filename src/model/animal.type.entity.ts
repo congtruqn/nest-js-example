@@ -10,7 +10,7 @@ import {
   import { BaseEntity } from './base.entity';
   import { AnimalsModel } from './animal.entity';
 
-  @Entity({ name: 'aninal_types' })
+  @Entity({ name: 'animal_types' })
   export class AnimalTypesModel extends BaseEntity {
   
     @PrimaryGeneratedColumn()
@@ -20,7 +20,7 @@ import {
     name: string;
 
     @Column({ type: 'int'})
-    status: string;
+    status: number;
 
     @OneToMany(
       () => AnimalsModel,

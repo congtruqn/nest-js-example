@@ -1,22 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AnimalsService } from './animals.service';
-import { CreateAnimalDto } from './dto/create-animal.dto';
-import { UpdateAnimalDto } from './dto/update-animal.dto';
+import { AnimalTypesService } from './animal.types.service';
+import { ResponseEntity } from '../utils/responses';
 
 @ApiTags('Animal Types')
 @Controller('animaltypes')
 export class AnimalTypesController {
-  constructor(private readonly animalsService: AnimalsService) {}
-
+  constructor(private readonly animalsService: AnimalTypesService) {}
   @Get()
-  findAll() {
-    return this.animalsService.findAll();
+  async findAll() {
+    const animaltype = await this.animalsService.findAll();
+    return new ResponseEntity({
+      statusCode: 200,
+      message: "",
+      data: {animaltype},
+    });
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.animalsService.findOne(+id);
-  }
-
 }
